@@ -3,10 +3,14 @@ input = sys.stdin.readline
 
 n,m = map(int,input().split())
 box = list(map(int,input().split()))
-box.sort()
-tot = sum(box)
 
-if (tot % m == 0): 
-    print(tot/m)
-else:
-    print(tot//m + 1)
+ans = 0
+cnt = 0
+for i in box:
+    if cnt + i > m:
+        ans += 1
+        cnt = i
+    else:
+        cnt += i
+
+print(ans+1)
