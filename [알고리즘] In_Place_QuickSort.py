@@ -1,34 +1,38 @@
-E = [5,4,3,2,1]
 
-def partitioning(S,p):
-    lt = 0
-    rt = len(S) - 1
-    while True:
-        while S[lt] < S[p] and lt < len(S):
-            lt += 1
-        while S[rt] > S[p] and rt >= 0:
-            rt -= 1
-        if lt == rt:
-            p = lt
+E = [4,3,1,2,5]
+def partition(E,l,r,p):
+    pivot = E[p]
+    while True: 
+        while (l < r):
+            if E[l] >= pivot:
+                break
+            l += 1
+        while (l < r):
+            if E[r] < pivot:
+                break
+            r -= 1
+
+        if l == r:
+            tmp = E[l]
+            E[l] = pivot
+            E[p] = tmp
+            p = l
             break
         else:
-            tmp = S[lt]
-            S[lt] = S[rt]
-            S[rt] = tmp
-
-    return (S[:p], S[p:])
-        
-
-# p = idx
-def quickSort(S,p):
-    if len(S) == 1:
-        return S
-    L,EUG = partitioning(S,p)
-    if len(L) > 1:
-        L = quickSort(L,len(L)-1)
-    if len(EUG) > 1:
-        EUG = quickSort(EUG,len(EUG)-1)
+            if E[l] == pivot:
+                p = r
+            tmp = E[l]
+            E[l] = E[r]
+            E[r] = tmp
+    return p
     
-    return L + EUG
+def quickSort(E,l,r):
+    if l < r:
+        p = (l + r) // 2
+        p = partition(E,l,r,p)
+        quickSort(E,l,p)
+        quickSort(E,p+1,r)
+        return
 
-print(quickSort(E,len(E)-1))
+quickSort(E,0,4)
+print(E)
