@@ -30,7 +30,8 @@ int search(int n, string cur) {
     }
 }
 
-void DFS(string addr) {
+// 스택에 넣을 첫번째 DFS
+void DFS1(string addr) {
     int idx = search(n,addr);
     // 이미 방문 했으면 종료
     if(ch1[idx]) return;
@@ -39,7 +40,7 @@ void DFS(string addr) {
     // 현 정점과 인접한 정점들 방문
     if (G[idx].size() != 0){
         for (int i = 0; i < G[idx].size(); ++i) {
-            DFS(G[idx][i]);
+            DFS1(G[idx][i]);
         }
     }
 
@@ -47,6 +48,7 @@ void DFS(string addr) {
     stck.push(addr);
 }
 
+// 두번째 DFS
 void DFS2(string addr, string leader) {
     int idx = search(n, addr);
 
@@ -68,7 +70,8 @@ void DFS2(string addr, string leader) {
 int main() {
     cin >> n;
     address = new string[n];
-    // 각 주소 정보 입력 및 주소에 대응되는 인덱스 정보를 가지는 배열 생성 및 정렬
+    // 각 주소 정보 입력 및
+    // G에서의 각 인덱스와 그 인덱스에 매핑되는 주소 정보를 가지는 배열 address 초기화 및 정렬
     for (int i = 0; i < n; ++i) {
         string cur;
         cin >> cur;
@@ -90,15 +93,15 @@ int main() {
             G[idx].push_back(vertex);
         }
     }
-    // G 정렬
+    // G에서 각 정점의 인접한 정점들 사전 순으로 정렬
     for (int i = 0; i < n; ++i) {
         sort(G[i].begin(), G[i].end());
     }
 
-    // 사전 순으로 DFS 수행
+    // 사전 순으로 DFS1 수행
     for (int i = 0; i < n; ++i) {
         if (!ch1[i]) {
-            DFS(address[i]);
+            DFS1(address[i]);
         }
     }
 
@@ -118,7 +121,7 @@ int main() {
         }
     }
 
-    // G_Reverse 정렬
+    // G_Reverse의 각 정점의 인접한 정점들 사전 순으로 정렬
     for (int i = 0; i < n; ++i) {
         sort(G_Reverse[i].begin(), G_Reverse[i].end());
     }
@@ -138,7 +141,7 @@ int main() {
     }
     cout << endl;
 
-    // SCC의 리더가 가리키는 주소 출력
+    // 각 정점의 SCC의 리더가 가리키는 주소 출력
     for (int i = 0; i < n; ++i) {
         cout << ans[i] << " ";
     }
